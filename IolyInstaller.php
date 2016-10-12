@@ -6,10 +6,10 @@
  * @author Stefan Moises <moises@shoptimax.de>
  * @copyright shoptimax GmbH, 2016
  */
-namespace Ioly;
+namespace ioly;
 
-require_once 'bootstrap.php';
-require_once 'IolyInstallerConfig.php';
+require_once '../../../bootstrap.php';
+require_once '../../../IolyInstallerConfig.php';
 
 use Composer\Script\Event;
 

@@ -17,7 +17,7 @@ use Composer\Script\Event;
  * Class IolyInstaller
  * No need to change anything here, all settings are in IolyInstallerConfig.php!
  *
- * @package Ioly
+ * @package ioly
  */
 class IolyInstaller
 {
@@ -28,7 +28,7 @@ class IolyInstaller
     protected static $ioly;
     /**
      * Ioly Config
-     * @var \Ioly\IolyInstallerConfig
+     * @var \ioly\IolyInstallerConfig
      */
     protected static $config;
     /**
@@ -59,6 +59,11 @@ class IolyInstaller
     private static $_startTime = 0;
 
     /**
+     * @var string
+     */
+    private static $_shopBaseDir = null;
+
+    /**
      * IolyInstaller constructor.
      */
     public static function constructStatic()
@@ -70,8 +75,10 @@ class IolyInstaller
         // oxUtilsServer::setOxCookie() which dies with an Exception if anything has been echo'd before ...
         ob_start();
         echo "\nIoly constructStatic ... \n";
+        $oConfig = \oxRegistry::getConfig();
+        self::$_shopBaseDir = $oConfig->getConfigParam('sShopDir');
         self::$ioly = new \ioly\ioly();
-        self::$ioly->setSystemBasePath(dirname(__FILE__));
+        self::$ioly->setSystemBasePath(self::$_shopBaseDir);
         self::$ioly->setSystemVersion(self::$config->getMainShopVersion());
         // add custom smx cookbook!
         self::$ioly->addCookbook('smx', self::$config->getCookbookPath());
@@ -79,7 +86,6 @@ class IolyInstaller
         echo "\nIoly init ... \n";
         self::init();
 
-        $oConfig = \oxRegistry::getConfig();
         echo "\nIoly setting base vars ... \n";
         // all domains for local
         self::$domainsLocal = $oConfig->getConfigParam('domainsLocal') != null ? $oConfig->getConfigParam('domainsLocal') : array();
@@ -99,7 +105,7 @@ class IolyInstaller
      */
     public static function handleStatusFile($create = true)
     {
-        $filePath = dirname(__FILE__) . "/.ioly_install_running";
+        $filePath = self::$_shopBaseDir . "/.ioly_install_running";
         if ($create) {
             $data = date("Y-m-d H:i:s");
             file_put_contents($filePath, $data, LOCK_EX);
@@ -155,7 +161,7 @@ class IolyInstaller
     {
         echo "\nIoly rm tmp files ... \n";
         // TODO - keep .htaccess and .gitignore files in tmp/**
-        exec('rm -Rf ' . dirname(__FILE__) . "/tmp/*");
+        exec('rm -Rf ' . self::$_shopBaseDir . "/tmp/*");
         // remove module entries from DB
         echo "\nIoly cleaning DB ... \n";
         try {
@@ -267,7 +273,7 @@ class IolyInstaller
                 }
                 echo "\nmodulePath: $modulePath";
                 $data = "\n# added by IolyInstaller for package {$package}, version {$version}\n" . $modulePath . "\n#end package {$package}\n";
-                $filePath = dirname(__FILE__) . '/.gitignore';
+                $filePath = self::$_shopBaseDir . '/.gitignore';
                 $contents = "";
                 if (file_exists($filePath)) {
                     $contents = file_get_contents($filePath);
@@ -280,7 +286,7 @@ class IolyInstaller
             // preserve existing files and
             // add every single file installed by ioly, so that only preserved files are visible in git!
             $data = "\n# added by IolyInstaller for package {$package}, version {$version}\n";
-            $filePath = dirname(__FILE__) . '/.gitignore';
+            $filePath = self::$_shopBaseDir . '/.gitignore';
             $contents = "";
             if (file_exists($filePath)) {
                 $contents = file_get_contents($filePath);
@@ -453,9 +459,9 @@ class IolyInstaller
      */
     protected static function updateLess()
     {
-        if (file_exists(dirname(__FILE__) . "/updateLessMirror.php")) {
+        if (file_exists(self::$_shopBaseDir . "/updateLessMirror.php")) {
             echo "\nCopying less files ...";
-            include dirname(__FILE__) . "/updateLessMirror.php";
+            include self::$_shopBaseDir . "/updateLessMirror.php";
             ob_flush();
         }
     }

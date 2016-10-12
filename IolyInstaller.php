@@ -8,8 +8,8 @@
  */
 namespace ioly;
 
-require_once '../../../bootstrap.php';
-require_once '../../../IolyInstallerConfig.php';
+require_once '../../../../bootstrap.php';
+require_once '../../../../IolyInstallerConfig.php';
 
 use Composer\Script\Event;
 

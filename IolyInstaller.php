@@ -75,6 +75,7 @@ class IolyInstaller
         // oxUtilsServer::setOxCookie() which dies with an Exception if anything has been echo'd before ...
         ob_start();
         echo "\nIoly constructStatic ... \n";
+        echo "\nDirname: " . dirname(__FILE__) . " \n";
         $oConfig = \oxRegistry::getConfig();
         self::$_shopBaseDir = $oConfig->getConfigParam('sShopDir');
         self::$ioly = new \ioly\ioly();

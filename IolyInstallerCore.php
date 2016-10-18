@@ -14,12 +14,12 @@ require_once dirname(__FILE__) . '/../../../bootstrap.php';
 require_once dirname(__FILE__) . '/../../../IolyInstallerConfig.php';
 
 /**
- * Class IolyInstaller
+ * Class IolyInstallerCore
  * No need to change anything here, all settings are in IolyInstallerConfig.php!
  *
  * @package ioly
  */
-class IolyInstaller
+class IolyInstallerCore
 {
     /**
      * Ioly Core
@@ -587,4 +587,4 @@ class IolyInstaller
         ob_flush();
     }
 }
-IolyInstaller::constructStatic();
+IolyInstallerCore::constructStatic();

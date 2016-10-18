@@ -550,7 +550,7 @@ class IolyInstallerCore
             $filepath = $tmpdir . $filename;
             if (is_file($filepath)) {
                 $msg .= "\nDeleting $filepath ...";
-                unlink($filepath);
+                @unlink($filepath);
             }
         }
         $msg .= "\nTmp clean!!";

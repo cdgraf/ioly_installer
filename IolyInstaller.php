@@ -27,13 +27,11 @@ class IolyInstaller
     /**
      * Main function
      * Runs after all composer installs are finished
-     * @param Event $event
+     * @param Event $event The composer event which is injected.
      */
     public static function postAutoloadDump(Event $event)
     {
-        echo "\nIolyInstallerComposer postAutoloadDump ... \n";
         $vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
-
         // run main installer class
         IolyInstallerCore::run($vendorDir);
     }

@@ -34,6 +34,7 @@ You can install the IolyInstaller via Composer afterwards, e.g.
 You can also use the installer core without Composer, e.g. for the OXID eShop:
 
 ```php
+<?php
 require "vendor/autoload.php";
 ioly\IolyInstallerCore::run(dirname(__FILE__) . "/vendor", false, false, false);
 ```

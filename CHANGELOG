@@ -1,2 +1,4 @@
+1.6.0 (2016-10-18)
+  - separated core installer from composer installer
 1.5.0 (2016-10-12)
   - first external release

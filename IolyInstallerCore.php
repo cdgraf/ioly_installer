@@ -210,6 +210,7 @@ class IolyInstallerCore
         echo "\ngetting modules list from dir ...";
         self::$oModuleList = oxNew('oxModuleList');
         $sModulesDir = $oConfig->getModulesDir();
+        echo "\ndir: $sModulesDir";
         // call this, in case of the oxconfig table doesn't have any module info yet!
         self::$aModules = self::$oModuleList->getModulesFromDir($sModulesDir);
         echo "\ngetting shopids, setting aModulePaths ...";

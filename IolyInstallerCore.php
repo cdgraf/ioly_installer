@@ -198,6 +198,42 @@ class IolyInstallerCore
     }
 
     /**
+     * temp. function to pre-check module dir
+     * @param string $sModulesDir
+     * @param null   $sVendorDir
+     */
+    protected static function getModulesFromDir($sModulesDir, $sVendorDir = null)
+    {
+        $sModulesDir = \oxRegistry::get('oxUtilsFile')->normalizeDir($sModulesDir);
+
+        foreach (glob($sModulesDir . '*') as $sModuleDirPath) {
+
+            $sModuleDirPath .= (is_dir($sModuleDirPath)) ? '/' : '';
+            $sModuleDirName = basename($sModuleDirPath);
+
+            // skipping some file
+            if ((!is_dir($sModuleDirPath) && substr($sModuleDirName, -4) != ".php")) {
+                continue;
+            }
+
+            if (is_dir($sModuleDirPath) && file_exists($sModuleDirPath . 'vendormetadata.php')) {
+                // scanning modules vendor directory
+                self::getModulesFromDir($sModuleDirPath, basename($sModuleDirPath));
+            } else {
+                // loading module info
+                $oModule = oxNew('oxModule');
+                $sModuleDirName = (!empty($sVendorDir)) ? $sVendorDir . '/' . $sModuleDirName : $sModuleDirName;
+                echo "\nchecking module dir: " . $sModuleDirName;
+                if ($oModule->loadByDir($sModuleDirName)) {
+                    $sModuleId = $oModule->getId();
+                    echo "\nModuleID: " . $sModuleId;
+                }
+            }
+        }
+    }
+
+
+    /**
      * If the oxconfig table is cleaned from module settings,
      * we need to set the module paths for subshops here ...
      */
@@ -211,6 +247,8 @@ class IolyInstallerCore
         self::$oModuleList = oxNew('oxModuleList');
         $sModulesDir = $oConfig->getModulesDir();
         echo "\ndir: $sModulesDir";
+        echo "\nPre-check module dir: ";
+        self::getModulesFromDir($sModulesDir);
         // call this, in case of the oxconfig table doesn't have any module info yet!
         self::$aModules = self::$oModuleList->getModulesFromDir($sModulesDir);
         echo "\ngetting shopids, setting aModulePaths ...";

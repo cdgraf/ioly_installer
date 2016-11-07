@@ -205,6 +205,7 @@ class IolyInstallerCore
     protected static function getModulesFromDir($sModulesDir, $sVendorDir = null)
     {
         $sModulesDir = \oxRegistry::get('oxUtilsFile')->normalizeDir($sModulesDir);
+        echo "\nloading module dir: " . $sModulesDir;
 
         foreach (glob($sModulesDir . '*') as $sModuleDirPath) {
 
@@ -218,6 +219,7 @@ class IolyInstallerCore
 
             if (is_dir($sModuleDirPath) && file_exists($sModuleDirPath . 'vendormetadata.php')) {
                 // scanning modules vendor directory
+                echo "\nrecurse into path: " . $sModuleDirPath;
                 self::getModulesFromDir($sModuleDirPath, basename($sModuleDirPath));
             } else {
                 // loading module info

@@ -183,7 +183,7 @@ class IolyInstallerCore
             foreach ($aShopIds as $shopId) {
                 \oxDb::getDb()->execute("DELETE FROM oxconfig WHERE oxvarname LIKE '%Module%' AND OXSHOPID='$shopId'");
                 // delete template block settings, too
-                \oxDb::getDb()->execute("DELETE FROM oxtplblocks AND OXSHOPID='$shopId'");
+                \oxDb::getDb()->execute("DELETE FROM oxtplblocks WHERE OXSHOPID='$shopId'");
             }
 
         } catch (\Exception $ex) {

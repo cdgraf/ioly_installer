@@ -142,6 +142,7 @@ class IolyInstallerCore
             if (!$skipActivation) {
                 if (!$skipClean) {
                     self::cleanConfig();
+                    self::emptyTmp();
                 }
                 self::initModuleSettings();
                 if (self::$config->isActivateAllExceptBlacklist()) {
@@ -178,9 +179,13 @@ class IolyInstallerCore
         // remove module entries from DB
         echo "\nIolyInstaller cleaning DB ... \n";
         try {
-            \oxDb::getDb()->execute("DELETE FROM oxconfig WHERE oxvarname LIKE '%Module%'");
-            // delete template block settings, too
-            \oxDb::getDb()->execute("DELETE FROM oxtplblocks");
+            $aShopIds = self::getShopIdsFromString(self::$config->getShopIds());
+            foreach ($aShopIds as $shopId) {
+                \oxDb::getDb()->execute("DELETE FROM oxconfig WHERE oxvarname LIKE '%Module%' AND OXSHOPID='$shopId'");
+                // delete template block settings, too
+                \oxDb::getDb()->execute("DELETE FROM oxtplblocks AND OXSHOPID='$shopId'");
+            }
+
         } catch (\Exception $ex) {
             echo "\nException cleaning DB: {$ex->getMessage()} \n";
 

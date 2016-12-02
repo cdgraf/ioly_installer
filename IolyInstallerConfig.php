@@ -81,10 +81,10 @@ class IolyInstallerConfig
      * @var array
      */
     protected $aPackages = array(
-        'ioly/ioly-oxid-connector' => array('version' => 'latest', 'preserveFiles' => false, 'uninstallfirst' => false),
-        'acirtautas/oxidmoduleinternals' => array('version' => '0.3.1', 'preserveFiles' => false, 'uninstallfirst' => false),
-        'vanillathunder/vtdevutils' => array('version' => 'legacy', 'preserveFiles' => false, 'uninstallfirst' => true),
-        'jkrug/ocbcleartmp' => array('version' => '1.0.0-v47', 'preserveFiles' => false, 'uninstallfirst' => false),
+        'ioly/ioly-oxid-connector' => array('version' => 'latest', 'preserveFiles' => false, 'uninstallfirst' => false, 'forcereinstall' => false),
+        'acirtautas/oxidmoduleinternals' => array('version' => '0.3.1', 'preserveFiles' => false, 'uninstallfirst' => false, 'forcereinstall' => false),
+        'vanillathunder/vtdevutils' => array('version' => 'legacy', 'preserveFiles' => false, 'uninstallfirst' => true, 'forcereinstall' => false),
+        'jkrug/ocbcleartmp' => array('version' => '1.0.0-v47', 'preserveFiles' => false, 'uninstallfirst' => false, 'forcereinstall' => true),
     );
 
     /**

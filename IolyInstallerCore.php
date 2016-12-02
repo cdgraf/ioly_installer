@@ -247,6 +247,7 @@ class IolyInstallerCore
         ob_flush();
         foreach (self::$config->getAPackages() as $package => $aData) {
             $version = $aData['version'];
+            $forceReinstall = $aData['forcereinstall'];
             if ($aData['uninstallfirst']) {
                 try {
                     if (self::$ioly->isInstalledInVersion($package, $version)) {
@@ -256,7 +257,7 @@ class IolyInstallerCore
                     echo "\nError un-installing package '$package': " . $ex->getMessage();
                 }
             }
-            if (!self::$ioly->isInstalledInVersion($package, $version)) {
+            if ($forceReinstall || !self::$ioly->isInstalledInVersion($package, $version)) {
                 try {
                     self::$ioly->install($package, $version, $aData['preserveFiles']);
                     echo "\nPackage: $package installed in version: $version";

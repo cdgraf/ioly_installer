@@ -81,7 +81,12 @@ class IolyInstallerCore
         self::$ioly->setSystemBasePath(self::$_shopBaseDir);
         self::$ioly->setSystemVersion(self::$config->getMainShopVersion());
         // add custom smx cookbook!
-        self::$ioly->addCookbook('smx', self::$config->getCookbookPath());
+        if (self::$config->getCookbookPath() != '') {
+            // delete first to update ...
+            self::$ioly->removeCookbook('smx');
+            self::$ioly->addCookbook('smx', self::$config->getCookbookPath());
+
+        }
 
         echo "\nIolyInstaller init ... \n";
         self::init();

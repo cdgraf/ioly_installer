@@ -75,8 +75,6 @@ class IolyInstallerCore
         // oxUtilsServer::setOxCookie() which dies with an Exception if anything has been echo'd before ...
         ob_start();
         echo "\nIolyInstaller constructStatic ... \n";
-        $oConfig = \oxRegistry::getConfig();
-        self::$_shopBaseDir = $oConfig->getConfigParam('sShopDir');
         self::$ioly = new \ioly\ioly();
         self::$ioly->setSystemBasePath(self::$_shopBaseDir);
         self::$ioly->setSystemVersion(self::$config->getMainShopVersion());
@@ -88,17 +86,21 @@ class IolyInstallerCore
 
         }
 
-        echo "\nIolyInstaller init ... \n";
-        self::init();
-
-        echo "\nIolyInstaller setting base vars ... \n";
-        // all domains for local
-        self::$domainsLocal = $oConfig->getConfigParam('domainsLocal') != null ? $oConfig->getConfigParam('domainsLocal') : array();
-        // local port
-        self::$portLocal = $oConfig->getConfigParam('portLocal') != null ? $oConfig->getConfigParam('portLocal') : "";
-        self::$shoptifindDataLocal = $oConfig->getConfigParam('shoptifindDataLocal') != null ? $oConfig->getConfigParam('shoptifindDataLocal') : array();
-        // set status marker
-        self::handleStatusFile(true);
+        // init OXID classes and vars?
+        if (!getenv('IOLY_ONLY_INSTALL') || getenv('IOLY_ONLY_INSTALL') != "true") {
+            echo "\nIolyInstaller init ... \n";
+            self::init();
+            $oConfig = \oxRegistry::getConfig();
+            self::$_shopBaseDir = $oConfig->getConfigParam('sShopDir');
+            echo "\nIolyInstaller setting base vars ... \n";
+            // all domains for local
+            self::$domainsLocal = $oConfig->getConfigParam('domainsLocal') != null ? $oConfig->getConfigParam('domainsLocal') : array();
+            // local port
+            self::$portLocal = $oConfig->getConfigParam('portLocal') != null ? $oConfig->getConfigParam('portLocal') : "";
+            self::$shoptifindDataLocal = $oConfig->getConfigParam('shoptifindDataLocal') != null ? $oConfig->getConfigParam('shoptifindDataLocal') : array();
+            // set status marker
+            self::handleStatusFile(true);
+        }
         echo "\nIolyInstaller constructStatic done ... \n";
     }
 

@@ -89,7 +89,7 @@ class IolyInstallerCore
         }
 
         // init OXID classes and vars?
-        if (!getenv('IOLY_ONLY_INSTALL') || getenv('IOLY_ONLY_INSTALL') != "true") {
+        if (getenv('IOLY_ONLY_INSTALL') != "true") {
             $oConfig = \oxRegistry::getConfig();
             //self::$_shopBaseDir = $oConfig->getConfigParam('sShopDir');
             echo "\nIolyInstaller init ... \n";
@@ -137,7 +137,7 @@ class IolyInstallerCore
     public static function run($vendorDir, $skipInstall = false, $skipActivation = false, $skipClean = false)
     {
         include $vendorDir . '/autoload.php';
-        echo "\nIolyInstaller running ... \n";
+        echo "\nIolyInstaller running - skipInstall: $skipInstall skipActivation: $skipActivation skipClean: $skipClean\n";
 
         try {
             // before we do anything, clean tmp and create views!
@@ -330,7 +330,7 @@ class IolyInstallerCore
                 if (strpos($contents, $file) === false) {
                     $data .= $file . "\n";
                 }
-                echo "\nmoduleFile: $file";
+                //echo "\nmoduleFile: $file";
             }
             $data .= "#end package {$package}\n";
             file_put_contents($filePath, $data, FILE_APPEND | LOCK_EX);

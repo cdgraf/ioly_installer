@@ -36,7 +36,7 @@ class IolyInstaller
         $skipActivation = false;
         $skipClean = false;
         // skip activation and cleanup?
-        if (getenv('IOLY_ONLY_INSTALL')) {
+        if (getenv('IOLY_ONLY_INSTALL') || getenv('IOLY_ONLY_INSTALL') == "true") {
             $skipActivation = true;
             $skipClean = true;
         }

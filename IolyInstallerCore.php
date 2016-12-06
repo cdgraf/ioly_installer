@@ -138,7 +138,9 @@ class IolyInstallerCore
 
         try {
             // before we do anything, clean tmp and create views!
-            self::cleanup();
+            if (!$skipClean) {
+                self::cleanup();
+            }
 
             if (!$skipInstall) {
                 self::doInstall();
@@ -155,11 +157,11 @@ class IolyInstallerCore
                 } else {
                     self::activateModulesWhitelisted();
                 }
+                self::updateConfig();
+                self::setupShoptifind();
+                self::finish();
             }
 
-            self::updateConfig();
-            self::setupShoptifind();
-            self::finish();
         } catch (Exception $ex) {
             echo "\nException occurred! " . $ex->getMessage() . "\n" . $ex->getTraceAsString();
         }

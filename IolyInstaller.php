@@ -32,7 +32,15 @@ class IolyInstaller
     public static function postAutoloadDump(Event $event)
     {
         $vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
+        $skipInstall = false;
+        $skipActivation = false;
+        $skipClean = false;
+        // skip activation and cleanup?
+        if (getenv('IOLY_ONLY_INSTALL')) {
+            $skipActivation = true;
+            $skipClean = true;
+        }
         // run main installer class
-        IolyInstallerCore::run($vendorDir);
+        IolyInstallerCore::run($vendorDir, $skipInstall, $skipActivation, $skipClean);
     }
 }

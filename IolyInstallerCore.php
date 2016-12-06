@@ -76,6 +76,8 @@ class IolyInstallerCore
         ob_start();
         echo "\nIolyInstaller constructStatic ... \n";
         self::$ioly = new \ioly\ioly();
+        self::$_shopBaseDir = dirname(__FILE__) . '/../../../';
+        echo "\nIolyInstaller setting base vars ... \n";
         self::$ioly->setSystemBasePath(self::$_shopBaseDir);
         self::$ioly->setSystemVersion(self::$config->getMainShopVersion());
         // add custom smx cookbook!
@@ -88,11 +90,10 @@ class IolyInstallerCore
 
         // init OXID classes and vars?
         if (!getenv('IOLY_ONLY_INSTALL') || getenv('IOLY_ONLY_INSTALL') != "true") {
+            $oConfig = \oxRegistry::getConfig();
+            //self::$_shopBaseDir = $oConfig->getConfigParam('sShopDir');
             echo "\nIolyInstaller init ... \n";
             self::init();
-            $oConfig = \oxRegistry::getConfig();
-            self::$_shopBaseDir = $oConfig->getConfigParam('sShopDir');
-            echo "\nIolyInstaller setting base vars ... \n";
             // all domains for local
             self::$domainsLocal = $oConfig->getConfigParam('domainsLocal') != null ? $oConfig->getConfigParam('domainsLocal') : array();
             // local port

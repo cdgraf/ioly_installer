@@ -82,6 +82,10 @@ class IolyInstallerCore
         self::$ioly->setSystemVersion(self::$config->getMainShopVersion());
         // add custom smx cookbook!
         if (self::$config->getCookbookPath() != '') {
+            // add new OXID Connector cookbook instead of old ioly cookbook!
+            self::$ioly->removeCookbook('ioly');
+            self::$ioly->removeCookbook('omc');
+            self::$ioly->addCookbook('omc', 'https://github.com/OXIDprojects/OXID-Modul-Connector/archive/recipes.zip');
             // delete first to update ...
             self::$ioly->removeCookbook('smx');
             self::$ioly->addCookbook('smx', self::$config->getCookbookPath());

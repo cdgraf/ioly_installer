@@ -294,6 +294,10 @@ class IolyInstallerCore
     {
         // get all module files from ioly
         $aModuleFiles = self::$ioly->getFileList($package, $version);
+        if (!$aModuleFiles || !is_array($aModuleFiles)) {
+            echo "\nWarning: no (additional) module files for package $package, version $version";
+            return;
+        }
         // do not preserve files, so add complete module dir to .gitignore
         if (!$preserveFiles) {
             $modulePath = '';
@@ -337,7 +341,9 @@ class IolyInstallerCore
                 //echo "\nmoduleFile: $file";
             }
             $data .= "#end package {$package}\n";
-            file_put_contents($filePath, $data, FILE_APPEND | LOCK_EX);
+            if (strpos($contents, "package {$package}, version {$version}") === false) {
+                file_put_contents($filePath, $data, FILE_APPEND | LOCK_EX);
+            }
         }
     }
 

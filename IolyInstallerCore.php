@@ -183,6 +183,8 @@ class IolyInstallerCore
         echo "\nIolyInstaller rm tmp files ... \n";
         // TODO - keep .htaccess and .gitignore files in tmp/**
         exec('rm -Rf ' . self::$_shopBaseDir . "/tmp/*");
+        echo "\nTrying to create views ...";
+        self::generateViews(self::$config->getShopIds());
     }
 
     /**

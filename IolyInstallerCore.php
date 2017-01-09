@@ -95,6 +95,8 @@ class IolyInstallerCore
         // init OXID classes and vars?
         if (getenv('IOLY_ONLY_INSTALL') != "true") {
             $oConfig = \oxRegistry::getConfig();
+            // avoid problems if views are already broken
+            $oConfig->setConfigParam('blSkipViewUsage', true);
             //self::$_shopBaseDir = $oConfig->getConfigParam('sShopDir');
             echo "\nIolyInstaller init ... \n";
             self::init();

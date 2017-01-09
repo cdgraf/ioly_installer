@@ -1,3 +1,9 @@
+1.7.0 (2017-01-09)
+  - fix for view problems if required views don't exist
+  - Env var check, more echo info…
+  - Added „forcereinstall“ parameter to modules array
+  - Improved gitignore patching
+  - other fixes ...
 1.6.0 (2016-10-18)
   - separated core installer from composer installer
 1.5.0 (2016-10-12)

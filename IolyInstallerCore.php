@@ -3,10 +3,10 @@
  * ioly installer class
  * Installs and optionally activates modules in the shop via ioly module manager.
  *
- * @version 1.6.0
+ * @version 1.7.0
  * @package ioly
  * @author Stefan Moises <moises@shoptimax.de>
- * @copyright shoptimax GmbH, 2016
+ * @copyright shoptimax GmbH, 2016-2017
  */
 namespace ioly;
 

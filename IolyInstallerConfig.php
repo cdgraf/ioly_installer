@@ -1,8 +1,10 @@
 <?php
 /**
  * ioly installer configuration file
+ * @version 1.7.0
+ * @package ioly
  * @author Stefan Moises <moises@shoptimax.de>
- * @copyright shoptimax GmbH, 2016
+ * @copyright shoptimax GmbH, 2016-2017
  */
 namespace ioly;
 

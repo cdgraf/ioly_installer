@@ -85,16 +85,11 @@ class IolyInstallerCore
             // add new OXID Connector cookbook instead of old ioly cookbook!
             self::$ioly->removeCookbook('ioly');
             self::$ioly->removeCookbook('omc');
-            echo "\nAdding omc cookbook...";
-            ob_flush();
             self::$ioly->addCookbook('omc', 'https://github.com/OXIDprojects/OXID-Modul-Connector/archive/recipes.zip');
             // delete first to update ...
             self::$ioly->removeCookbook('smx');
-            echo "\nAdding smx cookbook...";
-            ob_flush();
             self::$ioly->addCookbook('smx', self::$config->getCookbookPath());
-            echo "\nAdded cookbooks...";
-            ob_flush();
+
         }
 
         // init OXID classes and vars?
@@ -104,7 +99,6 @@ class IolyInstallerCore
             $oConfig->setConfigParam('blSkipViewUsage', true);
             //self::$_shopBaseDir = $oConfig->getConfigParam('sShopDir');
             echo "\nIolyInstaller init ... \n";
-            ob_flush();
             self::init();
             // all domains for local
             self::$domainsLocal = $oConfig->getConfigParam('domainsLocal') != null ? $oConfig->getConfigParam('domainsLocal') : array();
@@ -115,7 +109,6 @@ class IolyInstallerCore
             self::handleStatusFile(true);
         }
         echo "\nIolyInstaller constructStatic done ... \n";
-        ob_flush();
     }
 
     /**
@@ -151,7 +144,6 @@ class IolyInstallerCore
     {
         include $vendorDir . '/autoload.php';
         echo "\nIolyInstaller running - skipInstall: $skipInstall skipActivation: $skipActivation skipClean: $skipClean\n";
-        ob_flush();
 
         try {
             // before we do anything, clean tmp and create views!
@@ -215,7 +207,6 @@ class IolyInstallerCore
 
         }
         echo "\nIolyInstaller DB clean ... \n";
-        ob_flush();
     }
 
     /**
@@ -595,7 +586,6 @@ class IolyInstallerCore
         }
         $msg .= "\nTmp clean!!";
         echo $msg;
-        ob_flush();
     }
 
     /**

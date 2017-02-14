@@ -1,3 +1,5 @@
+1.7.1 (2017-02-14)
+  - added some more ob_flush() calls for debug output
 1.7.0 (2017-01-09)
   - fix for view problems if required views don't exist
   - Env var check, more echo info…

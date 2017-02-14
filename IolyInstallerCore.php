@@ -605,18 +605,24 @@ class IolyInstallerCore
     protected static function generateViews($aShopIds)
     {
         echo "\nGenerating views now ... ";
+        ob_flush();
         $msg = "";
         $oConfig = \oxRegistry::getConfig();
         // avoid problems if views are already broken
         $oConfig->setConfigParam('blSkipViewUsage', true);
+
+        try {
+            // Admin (tools_list.php) still uses this:
+            $oMetaData = oxNew('oxDbMetaDataHandler');
+            echo "\nCalling updateViews() now ... ";
+            ob_flush();
+            $blViewSuccess = $oMetaData->updateViews();
+            $msg .= "\nGlobal views generated: $blViewSuccess";
+        } catch (\Exception $ex) {
+            $msg .= "\nError generating views: " . $ex->getMessage();
+        }
+
         /*
-        // Admin (tools_list.php) still uses this:
-        $oMetaData = oxNew('oxDbMetaDataHandler');
-        $blViewSuccess = $oMetaData->updateViews();
-
-        $msg .= "\nGlobal views generated: $blViewSuccess";
-        */
-
         echo "\nGenerating views for shopids: " . $aShopIds;
         if (!is_array($aShopIds)) {
             $aShopIds = self::getShopIdsFromString($aShopIds);
@@ -629,6 +635,7 @@ class IolyInstallerCore
             $msg .= "\nGenerating views for ShopID $sShopId ...";
             $oShop->generateViews();
         }
+        */
 
         echo $msg;
         ob_flush();

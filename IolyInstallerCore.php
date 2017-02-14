@@ -609,13 +609,14 @@ class IolyInstallerCore
         $oConfig = \oxRegistry::getConfig();
         // avoid problems if views are already broken
         $oConfig->setConfigParam('blSkipViewUsage', true);
+        /*
         // Admin (tools_list.php) still uses this:
         $oMetaData = oxNew('oxDbMetaDataHandler');
         $blViewSuccess = $oMetaData->updateViews();
 
         $msg .= "\nGlobal views generated: $blViewSuccess";
+        */
 
-        /*
         echo "\nGenerating views for shopids: " . $aShopIds;
         if (!is_array($aShopIds)) {
             $aShopIds = self::getShopIdsFromString($aShopIds);
@@ -628,7 +629,6 @@ class IolyInstallerCore
             $msg .= "\nGenerating views for ShopID $sShopId ...";
             $oShop->generateViews();
         }
-        */
 
         echo $msg;
         ob_flush();

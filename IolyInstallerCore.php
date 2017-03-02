@@ -315,7 +315,11 @@ class IolyInstallerCore
                 }
                 echo "\nmodulePath: $modulePath";
                 $data = "\n# added by IolyInstaller for package {$package}, version {$version}\n" . $modulePath . "\n#end package {$package}\n";
-                $filePath = self::$_shopBaseDir . '/.gitignore';
+                // try folder above
+                $filePath = self::$_shopBaseDir . '/../.gitignore';
+                if (!file_exists($filePath)) {
+                    $filePath = self::$_shopBaseDir . '/.gitignore';
+                }
                 $contents = "";
                 if (file_exists($filePath)) {
                     $contents = file_get_contents($filePath);
@@ -328,7 +332,11 @@ class IolyInstallerCore
             // preserve existing files and
             // add every single file installed by ioly, so that only preserved files are visible in git!
             $data = "\n# added by IolyInstaller for package {$package}, version {$version}\n";
-            $filePath = self::$_shopBaseDir . '/.gitignore';
+            // try folder above
+            $filePath = self::$_shopBaseDir . '/../.gitignore';
+            if (!file_exists($filePath)) {
+                $filePath = self::$_shopBaseDir . '/.gitignore';
+            }
             $contents = "";
             if (file_exists($filePath)) {
                 $contents = file_get_contents($filePath);
@@ -594,9 +602,9 @@ class IolyInstallerCore
      */
     protected static function generateViews($aShopIds)
     {
-        echo "\nGenerating views now ... ";
-        ob_flush();
         $msg = "";
+        $msg .= "\nGenerating views now ... ";
+        //ob_flush();
         $oConfig = \oxRegistry::getConfig();
         // avoid problems if views are already broken
         $oConfig->setConfigParam('blSkipViewUsage', true);
@@ -604,8 +612,6 @@ class IolyInstallerCore
         try {
             // Admin (tools_list.php) still uses this:
             $oMetaData = oxNew('oxDbMetaDataHandler');
-            echo "\nCalling updateViews() now ... ";
-            ob_flush();
             $blViewSuccess = $oMetaData->updateViews();
             $msg .= "\nGlobal views generated: $blViewSuccess";
         } catch (\Exception $ex) {

@@ -24,6 +24,13 @@ use Composer\Script\Event;
  */
 class IolyInstaller
 {
+
+    /**
+     * Only run once during composer lifecycle
+     * @var bool
+     */
+    protected static $_firstRun = true;
+
     /**
      * Main function
      * Runs after all composer installs are finished
@@ -41,6 +48,9 @@ class IolyInstaller
             $skipClean = true;
         }
         // run main installer class
-        IolyInstallerCore::run($vendorDir, $skipInstall, $skipActivation, $skipClean);
+        if (self::$_firstRun) {
+            IolyInstallerCore::run($vendorDir, $skipInstall, $skipActivation, $skipClean);
+            self::$_firstRun = false;
+        }
     }
 }

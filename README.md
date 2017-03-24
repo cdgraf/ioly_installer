@@ -11,14 +11,14 @@ You can install the IolyInstaller via Composer afterwards, e.g.
 
 ```javascript
   "config": {
-    "gitlab-token": {
-      "glass.shoptimax.de": "abcdegf"
-    }
+    "github-oauth": {
+        "github.com": "abcdefghijk"
+    },
   },
   "repositories": {
     "ioly/installer": {
       "type": "vcs",
-      "url": "git@glass.shoptimax.de:internal/ioly_installer.git"
+      "url": "https://github.com/shoptimax/ioly_installer.git"
     }
   },
   "require": {

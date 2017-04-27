@@ -1,3 +1,5 @@
+1.7.3 (2017-04-27)
+  - use shoptimax fork of omc recipes to make sure we have a consistent repo
 1.7.2 (2017-03-02)
   - only run installer once during Composer lifecycle (fixes problems with composer-merge-plugin)
 1.7.1 (2017-02-14)

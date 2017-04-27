@@ -1,6 +1,6 @@
 {
   "name": "ioly/installer",
-  "url":"https://glass.shoptimax.de/internal/ioly_installer",
+  "url":"https://github.com/shoptimax/ioly_installer.git",
   "description": "ioly installer - The ioly Module Manager OXID installer",
   "keywords":["PHP", "installer", "module manager", "composer"],
   "license": "MIT",

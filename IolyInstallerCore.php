@@ -3,7 +3,7 @@
  * ioly installer class
  * Installs and optionally activates modules in the shop via ioly module manager.
  *
- * @version 1.7.2
+ * @version 1.7.3
  * @package ioly
  * @author Stefan Moises <moises@shoptimax.de>
  * @copyright shoptimax GmbH, 2016-2017
@@ -85,7 +85,7 @@ class IolyInstallerCore
             // add new OXID Connector cookbook instead of old ioly cookbook!
             self::$ioly->removeCookbook('ioly');
             self::$ioly->removeCookbook('omc');
-            self::$ioly->addCookbook('omc', 'https://github.com/OXIDprojects/OXID-Modul-Connector/archive/recipes.zip');
+            self::$ioly->addCookbook('omc', 'https://github.com/shoptimax/OXID-Module-Connector/archive/recipes.zip');
             // delete first to update ...
             self::$ioly->removeCookbook('smx');
             self::$ioly->addCookbook('smx', self::$config->getCookbookPath());

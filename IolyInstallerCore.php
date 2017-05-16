@@ -95,6 +95,9 @@ class IolyInstallerCore
         // init OXID classes and vars?
         if (getenv('IOLY_ONLY_INSTALL') != "true") {
             $oConfig = \oxRegistry::getConfig();
+            // call getBaseLanguage() to early set the cookie to prevent from
+            // headers already sent errors!
+            $sLang = \oxRegistry::getLang()->getBaseLanguage();
             // avoid problems if views are already broken
             $oConfig->setConfigParam('blSkipViewUsage', true);
             //self::$_shopBaseDir = $oConfig->getConfigParam('sShopDir');
@@ -227,30 +230,24 @@ class IolyInstallerCore
         echo "\n\n/**********************************************";
         echo "\ninitModuleSettings, setting aModulePaths ...";
         echo "\n/**********************************************\n";
-        try {
-            $oConfig = \oxRegistry::getConfig();
-            echo "\ngetting modules list from dir ...";
-            self::$oModuleList = oxNew('oxModuleList');
-            $sModulesDir = $oConfig->getModulesDir();
-            echo "\ndir: $sModulesDir";
-            // call this, in case of the oxconfig table doesn't have any module info yet!
-            self::$aModules = self::$oModuleList->getModulesFromDir($sModulesDir);
-            echo "\ngetting shopids, setting aModulePaths ...";
-            $aShopIds = self::getShopIdsFromString(self::$config->getShopIds());
-            $aModulePaths = $oConfig->getShopConfVar('aModulePaths', $aShopIds[0]);
-            foreach ($aShopIds as $shopId) {
-                echo "\nsetting aModulePaths for shop $shopId...";
-                $oConfig->setShopId($shopId);
-                // OXID seems to have a bug in oxmodulelist.php and only saves the module paths for shop id 1, so
-                // we save it for every shop id manually here!
-                $oConfig->saveShopConfVar('aarr', 'aModulePaths', $aModulePaths, $shopId);
-            }
-            ob_flush();
-
-        } catch (\Exception $ex) {
-            echo "\nException in initModuleSettings: {$ex->getMessage()} \n";
-
+        $oConfig = \oxRegistry::getConfig();
+        echo "\ngetting modules list from dir ...";
+        self::$oModuleList = oxNew('oxModuleList');
+        $sModulesDir = $oConfig->getModulesDir();
+        echo "\ndir: $sModulesDir";
+        // call this, in case of the oxconfig table doesn't have any module info yet!
+        self::$aModules = self::$oModuleList->getModulesFromDir($sModulesDir);
+        echo "\ngetting shopids, setting aModulePaths ...";
+        $aShopIds = self::getShopIdsFromString(self::$config->getShopIds());
+        $aModulePaths = $oConfig->getShopConfVar('aModulePaths', $aShopIds[0]);
+        foreach ($aShopIds as $shopId) {
+            echo "\nsetting aModulePaths for shop $shopId...";
+            $oConfig->setShopId($shopId);
+            // OXID seems to have a bug in oxmodulelist.php and only saves the module paths for shop id 1, so
+            // we save it for every shop id manually here!
+            $oConfig->saveShopConfVar('aarr', 'aModulePaths', $aModulePaths, $shopId);
         }
+        ob_flush();
     }
 
     /**
@@ -638,7 +635,7 @@ class IolyInstallerCore
         }
         */
         echo $msg;
-        //ob_flush();
+        ob_flush();
     }
 }
 IolyInstallerCore::constructStatic();

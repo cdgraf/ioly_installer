@@ -12,18 +12,16 @@
 namespace ioly;
 
 if (file_exists(dirname(__FILE__) . '/../../../bootstrap.php')) {
-    require_once dirname(__FILE__) . '/../../../bootstrap.php';    
-}
-else if (file_exists(dirname(__FILE__) . '/../../../source/bootstrap.php')) {
+    include_once dirname(__FILE__) . '/../../../bootstrap.php';    
+} else if (file_exists(dirname(__FILE__) . '/../../../source/bootstrap.php')) {
     // OXID 6
-    require_once dirname(__FILE__) . '/../../../source/bootstrap.php';    
+    include_once dirname(__FILE__) . '/../../../source/bootstrap.php';    
 }
 if (file_exists(dirname(__FILE__) . '/../../../IolyInstallerConfig.php')) {
-    require_once dirname(__FILE__) . '/../../../IolyInstallerConfig.php';
-}
-else if (file_exists(dirname(__FILE__) . '/../../../source/IolyInstallerConfig.php')) {
+    include_once dirname(__FILE__) . '/../../../IolyInstallerConfig.php';
+} else if (file_exists(dirname(__FILE__) . '/../../../source/IolyInstallerConfig.php')) {
     // OXID 6
-    require_once dirname(__FILE__) . '/../../../source/IolyInstallerConfig.php';
+    include_once dirname(__FILE__) . '/../../../source/IolyInstallerConfig.php';
 }
 
 use Composer\Script\Event;

@@ -3,16 +3,27 @@
  * ioly installer class
  * Installs and optionally activates modules in the shop via ioly module manager.
  *
- * @version 1.7.3
+ * @version 1.8.0
  * @package ioly
  * @author Stefan Moises <moises@shoptimax.de>
  * @copyright shoptimax GmbH, 2016-2017
  */
 namespace ioly;
 
-require_once dirname(__FILE__) . '/../../../bootstrap.php';
-require_once dirname(__FILE__) . '/../../../IolyInstallerConfig.php';
-
+if (file_exists(dirname(__FILE__) . '/../../../bootstrap.php')) {
+    require_once dirname(__FILE__) . '/../../../bootstrap.php';    
+}
+else if (file_exists(dirname(__FILE__) . '/../../../source/bootstrap.php')) {
+    // OXID 6
+    require_once dirname(__FILE__) . '/../../../source/bootstrap.php';    
+}
+if (file_exists(dirname(__FILE__) . '/../../../IolyInstallerConfig.php')) {
+    require_once dirname(__FILE__) . '/../../../IolyInstallerConfig.php';
+}
+else if (file_exists(dirname(__FILE__) . '/../../../source/IolyInstallerConfig.php')) {
+    // OXID 6
+    require_once dirname(__FILE__) . '/../../../source/IolyInstallerConfig.php';
+}
 /**
  * Class IolyInstallerCore
  * No need to change anything here, all settings are in IolyInstallerConfig.php!
@@ -76,7 +87,12 @@ class IolyInstallerCore
         ob_start();
         echo "\nIolyInstaller constructStatic ... \n";
         self::$ioly = new \ioly\ioly();
-        self::$_shopBaseDir = dirname(__FILE__) . '/../../../';
+        // OXID 6?
+        if (file_exists(dirname(__FILE__) . '/../../../source/bootstrap.php')) {
+            self::$_shopBaseDir = dirname(__FILE__) . '/../../../source/';
+        } else {
+            self::$_shopBaseDir = dirname(__FILE__) . '/../../../';
+        }
         echo "\nIolyInstaller setting base vars ... \n";
         self::$ioly->setSystemBasePath(self::$_shopBaseDir);
         self::$ioly->setSystemVersion(self::$config->getMainShopVersion());

@@ -3,7 +3,7 @@
  * ioly installer class
  * Installs and optionally activates modules in the shop via ioly module manager.
  *
- * @version 1.8.0
+ * @version 1.9.0
  * @package ioly
  * @author Stefan Moises <moises@shoptimax.de>
  * @copyright shoptimax GmbH, 2016-2017
@@ -256,12 +256,56 @@ class IolyInstallerCore
         $aModulePaths = $oConfig->getShopConfVar('aModulePaths', $aShopIds[0]);
         foreach ($aShopIds as $shopId) {
             echo "\nsetting aModulePaths for shop $shopId...";
-            $oConfig->setShopId($shopId);
+            self::switchToShopId($shopId);
             // OXID seems to have a bug in oxmodulelist.php and only saves the module paths for shop id 1, so
             // we save it for every shop id manually here!
             $oConfig->saveShopConfVar('aarr', 'aModulePaths', $aModulePaths, $shopId);
         }
         ob_flush();
+    }
+
+
+    /**
+     * Completely switch shop
+     *
+     * @param string $shopId The shop id
+     * 
+     * @return void
+     */
+    protected static function switchToShopId($shopId)
+    {
+        $_POST['shp'] = $shopId;
+        $_POST['actshop'] = $shopId;
+
+        $keepThese = [\OxidEsales\Eshop\Core\ConfigFile::class];
+        $registryKeys = \OxidEsales\Eshop\Core\Registry::getKeys();
+        foreach ($registryKeys as $key) {
+            if (in_array($key, $keepThese)) {
+                continue;
+            }
+            \OxidEsales\Eshop\Core\Registry::set($key, null);
+        }
+
+        $utilsObject = new \OxidEsales\Eshop\Core\UtilsObject;
+        $utilsObject->resetInstanceCache();
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsObject::class, $utilsObject);
+
+        \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::resetModuleVariables();
+        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('shp', $shopId);
+
+        //ensure we get rid of all instances of config, even the one in Core\Base
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, null);
+        \OxidEsales\Eshop\Core\Registry::getConfig()->setConfig(null);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, null);
+
+        $moduleVariablesCache = new \OxidEsales\Eshop\Core\FileCache();
+        $shopIdCalculator = new \OxidEsales\Eshop\Core\ShopIdCalculator($moduleVariablesCache);
+
+        if (($shopId != $shopIdCalculator->getShopId()) 
+            || ($shopId != \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId())
+        ) {
+            throw new \Exception('Failed to switch to subshop id ' . $shopId . " Calculate ID: " . $shopIdCalculator->getShopId() . " Config ShopId: " . \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId());
+        }
     }
 
     /**
@@ -435,8 +479,7 @@ class IolyInstallerCore
         $aShopIds = self::getShopIdsFromString($sFilteredIds);
         foreach ($aShopIds as $shopId) {
             try {
-                $oConfig->setShopId($shopId);
-
+                self::switchToShopId($shopId);
                 $oModule = oxNew('oxModule');
                 if ($oModule->load($sModuleId)) {
                     echo "\nLoaded $sModuleId module, trying to activate ...";
@@ -471,10 +514,10 @@ class IolyInstallerCore
      */
     protected static function updateConfig()
     {
+        $oConfig = \oxRegistry::getConfig();
         if (self::$domainsLocal && is_array(self::$domainsLocal)) {
             foreach (self::$domainsLocal as $shopId => $mallUrl) {
-                $oConfig = \oxRegistry::getConfig();
-                $oConfig->setShopId($shopId);
+                self::switchToShopId($shopId);
                 $sUrl = 'http://' . $mallUrl;
                 if (self::$portLocal != '80') {
                     $sUrl .= ":" . self::$portLocal;
@@ -512,7 +555,7 @@ class IolyInstallerCore
         $oConfig = \oxRegistry::getConfig();
         if (self::$shoptifindDataLocal && is_array(self::$shoptifindDataLocal)) {
             foreach (self::$shoptifindDataLocal as $shopId => $aShoptifindData) {
-                $oConfig->setShopId($shopId);
+                self::switchToShopId($shopId);
                 echo "\nSetting Shoptifind vars for Shop $shopId - Host: " . $aShoptifindData['shoptifindHost'] . " Port: " . $aShoptifindData['shoptifindPort'] . " AppPath: " . print_r($aShoptifindData['shoptifindAppPath'], true);
                 $oConfig->saveShopConfVar('str', 'shoptifindHost', $aShoptifindData['shoptifindHost'], $shopId);
                 $oConfig->saveShopConfVar('str', 'shoptifindPort', $aShoptifindData['shoptifindPort'], $shopId);

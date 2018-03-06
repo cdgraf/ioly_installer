@@ -4,7 +4,7 @@
  * Installs and optionally activates modules in the shop via ioly module manager
  * and is called via Composer.
  *
- * @version 1.8.0
+ * @version 1.9.0
  * @package ioly
  * @author Stefan Moises <moises@shoptimax.de>
  * @copyright shoptimax GmbH, 2016-2017

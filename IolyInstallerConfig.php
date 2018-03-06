@@ -1,7 +1,7 @@
 <?php
 /**
  * ioly installer configuration file
- * @version 1.8.0
+ * @version 1.9.0
  * @package ioly
  * @author Stefan Moises <moises@shoptimax.de>
  * @copyright shoptimax GmbH, 2016-2017

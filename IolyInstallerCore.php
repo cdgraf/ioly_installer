@@ -11,10 +11,10 @@
 namespace ioly;
 
 if (file_exists(dirname(__FILE__) . '/../../../bootstrap.php')) {
-    include_once dirname(__FILE__) . '/../../../bootstrap.php';    
+    include_once dirname(__FILE__) . '/../../../bootstrap.php';
 } else if (file_exists(dirname(__FILE__) . '/../../../source/bootstrap.php')) {
     // OXID 6
-    include_once dirname(__FILE__) . '/../../../source/bootstrap.php';    
+    include_once dirname(__FILE__) . '/../../../source/bootstrap.php';
 }
 if (file_exists(dirname(__FILE__) . '/../../../IolyInstallerConfig.php')) {
     include_once dirname(__FILE__) . '/../../../IolyInstallerConfig.php';
@@ -444,9 +444,16 @@ class IolyInstallerCore
                     $oModuleCache = oxNew('oxModuleCache', $oModule);
                     /** @var \oxModuleInstaller $oModuleInstaller */
                     $oModuleInstaller = oxNew('oxModuleInstaller', $oModuleCache);
+
                     if ($deactivateFirst && $oModuleInstaller->deactivate($oModule)) {
                         echo "\nDeactivated $sModuleId in Shop $shopId";
                     }
+
+                    echo "\n oModuleInstaller -> ".print_r($oModuleInstaller, true)." <--- ";
+                    echo "\n oModule -> ".print_r($oModule, true)." <--- ";
+                    echo "\n ShopId: " . $oConfig->getShopId() . "\n";
+                    ob_flush();
+
                     if ($oModuleInstaller->activate($oModule)) {
                         echo "\nActivated $sModuleId in Shop $shopId";
                         $activated = true;
